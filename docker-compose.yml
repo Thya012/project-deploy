@@ -35,7 +35,7 @@ services:
       context: .
       dockerfile: Dockerfile-client
       args:
-        ENV_FILE: ".env.client.prod"
+        ENV_FILE: ".env.client"
     container_name: client-prod
     depends_on:
       - server-prod
@@ -43,16 +43,16 @@ services:
       - .env.client:/app/.env
     # networks:
     #   - tfd-prod-network
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: "256M"
-        reservations:
-          cpus: "0.25"
-          memory: "128M"
-      restart_policy:
-        condition: on-failure
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "1.5"
+    #       memory: "1024M"
+    #     reservations:
+    #       cpus: "0.25"
+    #       memory: "512M"
+    #   restart_policy:
+    #     condition: on-failure
   
   nginx:
     restart: unless-stopped

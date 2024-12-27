@@ -1,10 +1,18 @@
 FROM node:18.20.2-slim
 ENV TZ="Asia/Bangkok"
+RUN npm install -g http-server
+#RUN npx update-browserslist-db@latest
 WORKDIR /app
 COPY client/package.json client/package-lock.json .env.client ./
-RUN npm install
+
 COPY client .
 RUN cp .env.client .env
+RUN npm install
 #RUN (cd client && npm install)
-EXPOSE 4000
-CMD ["npm", "run", "dev"]
+# RUN cd client
+# RUN npm run build
+#EXPOSE 1000
+RUN npm run build
+EXPOSE 8080
+CMD [ "http-server", "dist" ]
+#CMD ["npm", "run", "dev"]
