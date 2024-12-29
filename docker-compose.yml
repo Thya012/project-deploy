@@ -14,21 +14,21 @@ services:
       # - ./server/upload:/server/upload
       - ./server/src:/server/src
       - .env.server:/server/.env
-    # networks:
-    #   - tfd-prod-network
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"
-          memory: "512M"
-        reservations:
-          cpus: "0.5"
-          memory: "256M"
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+    networks:
+      - express-network
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "1.0"
+    #       memory: "512M"
+    #     reservations:
+    #       cpus: "0.5"
+    #       memory: "256M"
+    #   restart_policy:
+    #     condition: on-failure
+    #     delay: 5s
+    #     max_attempts: 3
+    #     window: 120s
   client-prod:
     restart: unless-stopped
     build:
@@ -41,8 +41,8 @@ services:
       - server-prod
     volumes:
       - .env.client:/app/.env
-    # networks:
-    #   - tfd-prod-network
+    networks:
+      - express-network
     # deploy:
     #   resources:
     #     limits:
@@ -69,15 +69,15 @@ services:
       # - HOST_3=tfd-elearning-platform-server-3
       - PORT=3000
       - NGINX_MAX_BODY=100M
-    # networks:
-    #   - tfd-prod-network
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: "256M"
-      restart_policy:
-        condition: on-failure
+    networks:
+      - express-network
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "0.5"
+    #       memory: "256M"
+    #   restart_policy:
+    #     condition: on-failure
   mongodb:
     build:
       context: .
@@ -87,31 +87,31 @@ services:
       - "27017:27017"
     volumes:
       - mongodbdata:/data/db
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"
-          memory: "512M"
-        reservations:
-          cpus: "0.5"
-          memory: "256M"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "1.0"
+    #       memory: "512M"
+    #     reservations:
+    #       cpus: "0.5"
+    #       memory: "256M"
   redis:
     image: redis:6-alpine
     container_name: redis1
     # networks:
     #   - tfd-prod-network
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: "128M"
-        reservations:
-          cpus: "0.25"
-          memory: "64M"
-      restart_policy:
-        condition: on-failure
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "0.5"
+    #       memory: "128M"
+    #     reservations:
+    #       cpus: "0.25"
+    #       memory: "64M"
+    #   restart_policy:
+    #     condition: on-failure
 volumes:
   mongodbdata:
-# networks:
-#   tfd-prod-network:
-#     external: true
+networks:
+  express-network:
+    external: true
