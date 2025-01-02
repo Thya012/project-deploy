@@ -1,6 +1,6 @@
 FROM node:18.20.2-slim
 ENV TZ="Asia/Bangkok"
-WORKDIR /server
+WORKDIR /app
 COPY server/package.json server/package-lock.json .env.server ./
 RUN npm install
 COPY server .
